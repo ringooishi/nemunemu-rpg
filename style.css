@@ -20,6 +20,8 @@ h1, h2, h3 {
 img {
   max-width: 100%;
   height: auto;
+  display: block;
+  margin: 0 auto;
 }
 
 /* ボタン類をタップしやすくする */
@@ -75,8 +77,9 @@ button {
     margin-bottom: 0.5em;
   }
 
-  .imagePanel {
-    flex-direction: column;
-    align-items: center;
-  }
+　.imagePanel img {
+  　width: 100%;
+  　max-width: 300px;
+  　height: auto;
+　}
 }
