@@ -25,3 +25,51 @@ h1{margin:0;font-size:22px}
 .hidden{display:none}
 .card{background:#111827;color:#e5e7eb;padding:24px;border-radius:14px;min-width:280px;text-align:center}
 .actions{margin-top:12px}
+/* --- Mobile レイアウト（横幅が 768px 以下の時） --- */
+@media (max-width: 768px) {
+  /* 1カラムに切り替え */
+  #battle {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  /* 右側の名前は左寄せに（見出しの段差を減らす） */
+  #rightCol .name.right {
+    text-align: left;
+  }
+
+  /* バーは幅制限を解除して画面幅に合わせる */
+  .bar {
+    min-width: 0;
+    width: 100%;
+  }
+
+  /* ログの高さを少し低めに */
+  .log {
+    height: 180px;
+  }
+
+  /* 画像エリアをコンパクトに、画像も縮小 */
+  .stage {
+    height: 180px;          /* もともと260px → 端末に合わせて小さめに */
+    gap: 12px;
+    justify-content: space-between;
+  }
+  .char {
+    max-height: 120px;      /* 180px → 120px */
+    max-width: 40vw;        /* 横幅が狭い端末での保険 */
+    height: auto;
+    width: auto;
+  }
+
+  /* コマンド行：折り返して2列タイル風に */
+  #commands {
+    gap: 10px;
+    padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); /* iOSのホームバー対策 */
+    background: #f3f4f6;
+  }
+  #commands button {
+    flex: 1 1 calc(50% - 10px);  /* だいたい2列になるように */
+    min-width: 140px;            /* 端末が極端に細い場合の下限 */
+  }
+}
