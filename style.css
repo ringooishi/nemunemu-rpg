@@ -1,75 +1,82 @@
-*{box-sizing:border-box}body{margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f3f4f6;color:#111}
-header{display:flex;gap:12px;align-items:center;justify-content:center;padding:8px 12px;border-bottom:1px solid #e5e7eb;background:#fff;position:sticky;top:0;z-index:10}
-h1{margin:0;font-size:22px}
-#battle{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:1100px;margin:12px auto;padding:0 12px}
-.name{font-weight:700;font-size:18px;margin:6px 0}
-.name.right{text-align:right}
-.barRow{display:flex;align-items:center;gap:8px;margin:6px 0}
-.barRow>span{display:inline-block;width:32px}
-.bar{position:relative;height:18px;background:#e5e7eb;border-radius:9px;overflow:hidden;flex:1;min-width:180px}
-.fill{height:100%;width:50%}
-.fill.green{background:#4caf50}.fill.blue{background:#2b6de0}.fill.red{background:#ef4444}
-.label{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-weight:700}
-.log{height:260px;border:1px solid #d1d5db;border-radius:6px;padding:8px;overflow:auto;background:#fff}
-.stage{position:relative;display:flex;justify-content:space-around;align-items:center;height:260px}
-.char{max-height:180px}
-#fxLayer{position:absolute;inset:0;pointer-events:none}
-#commands{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;max-width:1100px;margin:8px auto 20px;padding:0 12px}
-#commands button{padding:10px 16px;border-radius:10px;border:1px solid #d1d5db;background:#fff;cursor:pointer}
-#commands button:disabled{opacity:.5;cursor:not-allowed}
-/* floating numbers */
-.fx{position:absolute;font-weight:800;pointer-events:none;user-select:none;animation:rise .7s ease-out forwards}
-@keyframes rise{from{transform:translate(-50%,-10px);opacity:1}to{transform:translate(-50%,-60px);opacity:0}}
-/* modal */
-.modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,.5)}
-.hidden{display:none}
-.card{background:#111827;color:#e5e7eb;padding:24px;border-radius:14px;min-width:280px;text-align:center}
-.actions{margin-top:12px}
-/* --- Mobile レイアウト（横幅が 768px 以下の時） --- */
-@media (max-width: 768px) {
-  /* 1カラムに切り替え */
-  #battle {
-    grid-template-columns: 1fr;
-    gap: 12px;
+body {
+  margin: 0;
+  font-family: sans-serif;
+  background-color: #f8f8f8;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+h1, h2, h3 {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+/* ボタン類をタップしやすくする */
+button {
+  padding: 0.8em 1.5em;
+  font-size: 1.1rem;
+  margin: 0.5em;
+  border-radius: 8px;
+}
+
+/* フレックスボックス対応 */
+.battle-panel {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  gap: 1rem;
+}
+
+.battle-panel > * {
+  flex: 1 1 45%;
+}
+
+/* ログエリアと画像を縦に積む（スマホ対応） */
+@media screen and (max-width: 768px) {
+  .battle-panel {
+    flex-direction: column;
   }
 
-  /* 右側の名前は左寄せに（見出しの段差を減らす） */
-  #rightCol .name.right {
-    text-align: left;
+  .buttons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  /* バーは幅制限を解除して画面幅に合わせる */
-  .bar {
-    min-width: 0;
+  .buttons button {
+    width: 80%;
+    max-width: 300px;
+  }
+
+  .log-area {
     width: 100%;
-  }
-
-  /* ログの高さを少し低めに */
-  .log {
-    height: 180px;
-  }
-
-  /* 画像エリアをコンパクトに、画像も縮小 */
-  .stage {
-    height: 180px;          /* もともと260px → 端末に合わせて小さめに */
-    gap: 12px;
-    justify-content: space-between;
-  }
-  .char {
-    max-height: 120px;      /* 180px → 120px */
-    max-width: 40vw;        /* 横幅が狭い端末での保険 */
     height: auto;
-    width: auto;
+    font-size: 0.95rem;
   }
 
-  /* コマンド行：折り返して2列タイル風に */
-  #commands {
-    gap: 10px;
-    padding: 8px 12px calc(8px + env(safe-area-inset-bottom)); /* iOSのホームバー対策 */
-    background: #f3f4f6;
+  .status-bars {
+    flex-direction: column;
+    align-items: stretch;
   }
-  #commands button {
-    flex: 1 1 calc(50% - 10px);  /* だいたい2列になるように */
-    min-width: 140px;            /* 端末が極端に細い場合の下限 */
+
+  .status-bars .bar-row {
+    margin-bottom: 0.5em;
+  }
+
+  .imagePanel {
+    flex-direction: column;
+    align-items: center;
   }
 }
