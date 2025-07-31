@@ -1,79 +1,36 @@
-body {
-    font-family: sans-serif;
-    text-align: center;
-    background: #fff;
-    margin: 0;
-    padding: 20px;
+
+.battlefield {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: 10px;
+  margin-top: 20px;
+  flex-wrap: wrap;
 }
 
-h1 {
-    margin-bottom: 20px;
+.character {
+  flex: 1 1 45%;
+  text-align: center;
 }
 
-.battle-container {
-    display: flex;
-    justify-content: center;
-    align-items: flex-end;
-    gap: 5vw;
+.character img {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+}
+
+@media screen and (max-width: 768px) {
+  .battlefield {
+    flex-direction: row;
     flex-wrap: wrap;
-}
+    justify-content: center;
+  }
 
-.player-area, .enemy-area {
-    width: 40%;
-    min-width: 200px;
-}
+  .character {
+    flex-basis: 100%;
+  }
 
-.character-name {
-    font-weight: bold;
-    font-size: 1.2em;
-}
-
-.bar {
-    margin: 5px auto;
-    height: 20px;
-    position: relative;
-    background-color: #ddd;
-    border-radius: 5px;
-}
-
-.hp-bar {
-    background-color: #f44336;
-}
-
-.hp-bar span, .mp-bar span {
-    position: absolute;
-    width: 100%;
-    text-align: center;
-    color: black;
-    font-weight: bold;
-    top: 0;
-    left: 0;
-}
-
-.mp-bar {
-    background-color: #2196F3;
-}
-
-.character-img {
-    width: 100%;
-    max-width: 180px;
-    height: auto;
-}
-
-.log-area {
-    margin-top: 20px;
-    max-width: 600px;
-    margin-left: auto;
-    margin-right: auto;
-    text-align: left;
-}
-
-@media (max-width: 768px) {
-    .battle-container {
-        flex-direction: row;
-        flex-wrap: wrap;
-    }
-    .player-area, .enemy-area {
-        width: 45%;
-    }
+  .character img {
+    max-width: 200px;
+  }
 }
