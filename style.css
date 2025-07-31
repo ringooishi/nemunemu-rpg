@@ -1,85 +1,60 @@
 body {
+  font-family: 'Arial', sans-serif;
+  text-align: center;
   margin: 0;
-  font-family: sans-serif;
-  background-color: #f8f8f8;
+  padding: 20px;
+  background-color: #fff;
 }
 
-.container {
+.character-area {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  margin-top: 20px;
+}
+
+.character-area img {
+  max-width: 120px;
+  width: 100%;
+  height: auto;
+}
+
+.enemy,
+.player {
   display: flex;
   flex-direction: column;
-  padding: 1rem;
-  max-width: 960px;
-  margin: 0 auto;
+  align-items: center;
 }
 
-h1, h2, h3 {
+.enemy-status,
+.player-status {
   text-align: center;
-  margin-bottom: 1rem;
+  margin-top: 5px;
 }
 
-img {
-  max-width: 100%;
-  height: auto;
-  display: block;
-  margin: 0 auto;
+.bar-container {
+  width: 100px;
+  background-color: #eee;
+  border-radius: 5px;
+  overflow: hidden;
+  margin: 2px 0;
 }
 
-/* ボタン類をタップしやすくする */
-button {
-  padding: 0.8em 1.5em;
-  font-size: 1.1rem;
-  margin: 0.5em;
-  border-radius: 8px;
+.bar {
+  height: 16px;
+  line-height: 16px;
+  color: white;
+  font-size: 12px;
 }
 
-/* フレックスボックス対応 */
-.battle-panel {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-around;
-  gap: 1rem;
-}
+.hp-bar { background-color: #4CAF50; }
+.mp-bar { background-color: #2196F3; }
+.enemy-hp-bar { background-color: #f44336; }
 
-.battle-panel > * {
-  flex: 1 1 45%;
-}
-
-/* ログエリアと画像を縦に積む（スマホ対応） */
-@media screen and (max-width: 768px) {
-  .battle-panel {
+@media screen and (max-width: 600px) {
+  .character-area {
     flex-direction: column;
+    align-items: center;
   }
-
-  .buttons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  .buttons button {
-    width: 80%;
-    max-width: 300px;
-  }
-
-  .log-area {
-    width: 100%;
-    height: auto;
-    font-size: 0.95rem;
-  }
-
-  .status-bars {
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  .status-bars .bar-row {
-    margin-bottom: 0.5em;
-  }
-
-　.imagePanel img {
-  　width: 100%;
-  　max-width: 300px;
-  　height: auto;
-　}
 }
