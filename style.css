@@ -1,60 +1,79 @@
 body {
-  font-family: 'Arial', sans-serif;
-  text-align: center;
-  margin: 0;
-  padding: 20px;
-  background-color: #fff;
+    font-family: sans-serif;
+    text-align: center;
+    background: #fff;
+    margin: 0;
+    padding: 20px;
 }
 
-.character-area {
-  display: flex;
-  justify-content: space-around;
-  align-items: flex-start;
-  flex-wrap: wrap;
-  margin-top: 20px;
+h1 {
+    margin-bottom: 20px;
 }
 
-.character-area img {
-  max-width: 120px;
-  width: 100%;
-  height: auto;
+.battle-container {
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    gap: 5vw;
+    flex-wrap: wrap;
 }
 
-.enemy,
-.player {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.player-area, .enemy-area {
+    width: 40%;
+    min-width: 200px;
 }
 
-.enemy-status,
-.player-status {
-  text-align: center;
-  margin-top: 5px;
-}
-
-.bar-container {
-  width: 100px;
-  background-color: #eee;
-  border-radius: 5px;
-  overflow: hidden;
-  margin: 2px 0;
+.character-name {
+    font-weight: bold;
+    font-size: 1.2em;
 }
 
 .bar {
-  height: 16px;
-  line-height: 16px;
-  color: white;
-  font-size: 12px;
+    margin: 5px auto;
+    height: 20px;
+    position: relative;
+    background-color: #ddd;
+    border-radius: 5px;
 }
 
-.hp-bar { background-color: #4CAF50; }
-.mp-bar { background-color: #2196F3; }
-.enemy-hp-bar { background-color: #f44336; }
+.hp-bar {
+    background-color: #f44336;
+}
 
-@media screen and (max-width: 600px) {
-  .character-area {
-    flex-direction: column;
-    align-items: center;
-  }
+.hp-bar span, .mp-bar span {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    color: black;
+    font-weight: bold;
+    top: 0;
+    left: 0;
+}
+
+.mp-bar {
+    background-color: #2196F3;
+}
+
+.character-img {
+    width: 100%;
+    max-width: 180px;
+    height: auto;
+}
+
+.log-area {
+    margin-top: 20px;
+    max-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: left;
+}
+
+@media (max-width: 768px) {
+    .battle-container {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+    .player-area, .enemy-area {
+        width: 45%;
+    }
 }

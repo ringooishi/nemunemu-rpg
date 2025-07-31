@@ -1,39 +1,28 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>ナイトメアバトル</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ナイトメアバトル</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <h1>ナイトメアバトル</h1>
-
-  <div class="character-area">
-    <!-- 敵キャラ -->
-    <div class="enemy">
-      <img src="images/enemy.png" alt="敵キャラ">
-      <div class="enemy-status">
-        <p>ブルーライトのけもの</p>
-        <div class="bar-container">
-          <div class="bar enemy-hp-bar" style="width: 100%;">60/60</div>
+    <h1>ナイトメアバトル</h1>
+    <div class="battle-container">
+        <div class="enemy-area">
+            <p class="character-name">ブルーライトのけもの</p>
+            <div class="bar hp-bar"><span>60/60</span></div>
+            <img src="images/enemy.png" class="character-img" alt="enemy">
         </div>
-      </div>
+        <div class="player-area">
+            <p class="character-name">勇者ねむねむ</p>
+            <div class="bar hp-bar"><span>100/100</span></div>
+            <div class="bar mp-bar"><span>50/50</span></div>
+            <img src="images/player.png" class="character-img" alt="player">
+        </div>
     </div>
-
-    <!-- 主人公 -->
-    <div class="player">
-      <img src="images/player.png" alt="プレイヤーキャラ">
-      <div class="player-status">
-        <p>勇者ねむねむ</p>
-        <div class="bar-container">
-          <div class="bar hp-bar" style="width: 100%;">100/100</div>
-        </div>
-        <div class="bar-container">
-          <div class="bar mp-bar" style="width: 100%;">50/50</div>
-        </div>
-      </div>
+    <div class="log-area">
+        <p>魔物が現れた！：ブルーライトのけもの</p>
     </div>
-  </div>
 </body>
 </html>
