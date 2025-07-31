@@ -1,36 +1,116 @@
-
-.battlefield {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-end;
-  gap: 10px;
-  margin-top: 20px;
-  flex-wrap: wrap;
-}
-
-.character {
-  flex: 1 1 45%;
+/* 全体レイアウト調整 */
+body {
+  margin: 0;
+  font-family: "Hiragino Kaku Gothic ProN", Meiryo, sans-serif;
+  background-color: #ffffff;
   text-align: center;
 }
 
-.character img {
-  width: 100%;
-  max-width: 250px;
+/* タイトル */
+h1 {
+  font-size: 2em;
+  margin-top: 20px;
+}
+
+/* ステータスエリア */
+.status {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 0 10px;
+}
+
+/* バトルログ */
+#log {
+  width: 90%;
+  height: 150px;
+  margin: 10px auto;
+  resize: none;
+}
+
+/* キャラ画像配置 */
+.character-area {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+
+/* キャラ画像 */
+.character-area img {
+  max-width: 150px;
+  width: 40%;
   height: auto;
 }
 
-@media screen and (max-width: 768px) {
-  .battlefield {
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: center;
+/* ボタン */
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+button {
+  font-size: 1rem;
+  padding: 8px 16px;
+  border-radius: 10px;
+  border: none;
+  background-color: #eee;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+button:hover {
+  background-color: #ddd;
+}
+
+/* HPバー */
+.bar-container {
+  width: 100%;
+  background-color: #ccc;
+  border-radius: 5px;
+  margin: 4px 0;
+}
+
+.bar {
+  height: 20px;
+  border-radius: 5px;
+  color: black;
+  font-weight: bold;
+  text-align: center;
+  line-height: 20px;
+}
+
+.hp-bar {
+  background-color: #4caf50;
+}
+
+.mp-bar {
+  background-color: #2196f3;
+}
+
+.enemy-hp-bar {
+  background-color: #f44336;
+}
+
+/* レスポンシブ調整 */
+@media screen and (max-width: 600px) {
+  h1 {
+    font-size: 1.5em;
   }
 
-  .character {
-    flex-basis: 100%;
+  .character-area img {
+    max-width: 100px;
   }
 
-  .character img {
-    max-width: 200px;
+  button {
+    font-size: 0.9rem;
+    padding: 6px 12px;
+  }
+
+  #log {
+    height: 120px;
   }
 }

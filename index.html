@@ -1,28 +1,53 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ja">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ナイトメアバトル</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ねむねむバトル Web</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
+  <header>
     <h1>ナイトメアバトル</h1>
-    <div class="battle-container">
-        <div class="enemy-area">
-            <p class="character-name">ブルーライトのけもの</p>
-            <div class="bar hp-bar"><span>60/60</span></div>
-            <img src="images/enemy.png" class="character-img" alt="enemy">
-        </div>
-        <div class="player-area">
-            <p class="character-name">勇者ねむねむ</p>
-            <div class="bar hp-bar"><span>100/100</span></div>
-            <div class="bar mp-bar"><span>50/50</span></div>
-            <img src="images/player.png" class="character-img" alt="player">
-        </div>
+    <div id="statusCenter"></div>
+  </header>
+
+  <main id="battle">
+    <section id="leftCol">
+      <div class="name" id="playerName">勇者ねむねむ</div>
+      <div class="barRow"><span>HP</span><div class="bar"><div id="pHP" class="fill green"></div><div id="pHPText" class="label"></div></div></div>
+      <div class="barRow"><span>MP</span><div class="bar"><div id="pMP" class="fill blue"></div><div id="pMPText" class="label"></div></div></div>
+      <div id="log" class="log"></div>
+    </section>
+
+    <section id="rightCol">
+      <div class="name right" id="enemyName"></div>
+      <div class="barRow"><span>HP</span><div class="bar"><div id="eHP" class="fill red"></div><div id="eHPText" class="label"></div></div></div>
+      <div class="stage">
+        <img id="playerImg" class="char" src="images/player.png" alt="player">
+        <img id="enemyImg" class="char" src="images/blu.png" alt="enemy">
+        <div id="fxLayer"></div>
+      </div>
+    </section>
+  </main>
+
+  <nav id="commands">
+    <button id="btnAtk">まくらパンチ</button>
+    <button id="btnSkill">スリープソング</button>
+    <button id="btnHeal">瞑想</button>
+    <button id="btnItem">回復アイテム（3）</button>
+  </nav>
+
+  <div id="result" class="modal hidden">
+    <div class="card">
+      <h2 id="resultTitle"></h2>
+      <p id="resultTurns"></p>
+      <div class="actions">
+        <button id="btnRetry">もう一度あそぶ</button>
+      </div>
     </div>
-    <div class="log-area">
-        <p>魔物が現れた！：ブルーライトのけもの</p>
-    </div>
+  </div>
+
+  <script src="main.js"></script>
 </body>
 </html>
