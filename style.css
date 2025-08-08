@@ -93,10 +93,10 @@ body {
 }
 
 /* キャラ画像表示クラス */
-.player-sprite.player-img { background-image: url("player.png"); }
-.enemy-sprite.enemy-blue { background-image: url("blu.png"); }
-.enemy-sprite.enemy-ghost { background-image: url("ghost.png"); }
-.enemy-sprite.enemy-caffeine { background-image: url("caffeine.png"); }
+.player-sprite.player-img { background-image: url("img/player.png"); }
+.enemy-sprite.enemy-blue { background-image: url("img/blu.png"); }
+.enemy-sprite.enemy-ghost { background-image: url("img/ghost.png"); }
+.enemy-sprite.enemy-caffeine { background-image: url("img/caffeine.png"); }
 
 .effect-layer {
   position: absolute;
