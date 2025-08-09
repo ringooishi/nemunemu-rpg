@@ -26,7 +26,6 @@ function floatText(targetEl, text, cssClass = "dmg") {
   tip.className = "floating " + cssClass;
   tip.textContent = text;
 
-  // layer（.arena内の絶対配置）基準に座標を出す
   const base = layer.getBoundingClientRect();
   const box = targetEl.getBoundingClientRect();
   tip.style.left = (box.left + box.width / 2 - base.left) + "px";
@@ -73,29 +72,32 @@ let state = {
   enemy: null,
   enemyDoubleNext: false,
   busy: false,
-  gameEnded: false,   // ← クリア後の入力ガード
+  gameEnded: false,
   turnCount: 0
 };
 
 // ===== UI helpers =====
 function setBars(){
-  const {player, enemy} = state;
-  $("#playerNameLabel").textContent = player.name;
-  $("#playerHpText").textContent = `${player.hp}/${player.maxHp}`;
-  $("#playerMpText").textContent = `${player.mp}/${player.maxMp}`;
-  $("#itemPill").textContent = `回復x${player.items}`;
-  $("#playerHpBar").style.width = (player.hp/player.maxHp*100)+"%";
-  $("#playerMpBar").style.width = (player.mp/player.maxMp*100)+"%";
+  const { player, enemy } = state;
 
-  if (enemy){
-    $("#enemyNameLabel").textContent = enemy.name;
-    $("#enemyHpText").textContent = `${enemy.hp}/${enemy.maxHp}`;
-    $("#enemyHpBar").style.width = (enemy.hp/enemy.maxHp*100)+"%";
-  } else {
-    $("#enemyNameLabel").textContent = "----";
-    $("#enemyHpText").textContent = `--/--`;
-    $("#enemyHpBar").style.width = "0%";
-  }
+  const hpFill = $("#playerHpBar");
+  const mpFill = $("#playerMpBar");
+  const ehpFill = $("#enemyHpBar");
+
+  hpFill.style.width = (player.hp/player.maxHp*100) + "%";
+  mpFill.style.width = (player.mp/player.maxMp*100) + "%";
+  ehpFill.style.width = enemy ? (enemy.hp/enemy.maxHp*100) + "%" : "0%";
+
+  // 数値は親 .bar にセット（CSSで .bar::after に表示）
+  $("#playerHpWrap").setAttribute("data-value", `${player.hp}/${player.maxHp}`);
+  $("#playerMpWrap").setAttribute("data-value", `${player.mp}/${player.maxMp}`);
+  $("#enemyHpWrap").setAttribute("data-value", enemy ? `${enemy.hp}/${enemy.maxHp}` : `--/--`);
+  hpFill.setAttribute("data-value", `${player.hp}/${player.maxHp}`);
+  mpFill.setAttribute("data-value", `${player.mp}/${player.maxMp}`);
+  ehpFill.setAttribute("data-value", enemy ? `${enemy.hp}/${enemy.maxHp}` : `--/--`);
+
+  // アイテム所持数も更新
+  $("#itemPill").textContent = `回復アイテムx${player.items}`;
 }
 
 function setCommandsEnabled(v){
@@ -132,7 +134,6 @@ function finishGame(){
   state.gameEnded = true;
   setCommandsEnabled(false);
   log("すべての魔物を倒した！快眠が訪れる……zzz");
-  // 勝利モーダルが用意されていれば呼ぶ
   if (typeof window.showVictoryModal === "function") {
     window.showVictoryModal(state.turnCount || 0);
   } else {
@@ -151,10 +152,10 @@ function startGame(){
   state.player.mp    = diff.pMP;
   state.player.items = diff.items;
 
+  // 敵リストを生成
   state.enemies = ENEMY_MASTERS.map(m=>{
     const hp = Math.round(m.baseHp * diff.eHpMul);
-    return { name:m.name, spriteClass:m.spriteClass, baseHp:m.baseHp,
-             maxHp:hp, hp:hp, skills:m.skills.map(s=>({...s})) };
+    return { name:m.name, spriteClass:m.spriteClass, baseHp:m.baseHp, maxHp:hp, hp:hp, skills:m.skills.map(s=>({...s})) };
   });
 
   state.enemyIndex = 0;
@@ -164,25 +165,36 @@ function startGame(){
   state.gameEnded = false;
   state.turnCount = 0;
 
+  // 画面切替
   $("#start-screen").classList.add("hidden");
   $("#game-screen").classList.remove("hidden");
   setDifficultyPill();
-  nextEnemy();
 
-  // プレイヤー画像クラス付与（CSSが用意されている前提）
+  // 名前表示更新
+  $("#playerNameLabel").textContent = state.player.name;
+
+  // プレイヤー画像クラス
   const psp = document.querySelector(".player-sprite");
   if (psp) psp.classList.add("player-img");
+
+  nextEnemy();
 }
 
 function nextEnemy(){
-  // 全滅チェック：ここでもガードしておく
   if (state.enemyIndex >= state.enemies.length){
     finishGame();
     return;
   }
   state.enemy = { ...state.enemies[state.enemyIndex] };
-  $("#enemySprite").className = "sprite enemy-sprite " + (state.enemy.spriteClass || "");
-  $("#enemySprite").classList.remove("shake");
+
+  const enemySprite = $("#enemySprite");
+  enemySprite.className = "sprite enemy-sprite " + (state.enemy.spriteClass || "");
+  enemySprite.classList.remove("shake");
+  enemySprite.style.display = "block";
+
+  // 敵名を表示
+  $("#enemyNameLabel").textContent = state.enemy.name;
+
   setBars();
   log(`魔物が現れた！: ${state.enemy.name}`);
   setCommandsEnabled(true);
@@ -230,29 +242,24 @@ function playerTurn(action){
       log(`♪ スリープソング！ しかし効かなかった…`);
     }
 
- } else if (action === "item") {
-  if (p.items <= 0){
-    log("回復アイテムを持っていない！");
-    showToast("アイテムがありません！");
-    state.busy = false;
-    setCommandsEnabled(true);
-    return;
-  }
+  } else if (action === "item") {
+    if (p.items <= 0){
+      log("回復アイテムを持っていない！");
+      showToast("アイテムがありません！");
+      state.busy = false;
+      setCommandsEnabled(true);
+      return;
+    }
 
-  const heal = 50;
-  const mpRecover = 20;
+    const heal = 50;
+    const mpRecover = 20;
+    p.items--;
+    p.hp = clamp(p.hp + heal, 0, p.maxHp);
+    p.mp = clamp(p.mp + mpRecover, 0, p.maxMp);
+    floatText(playerBox, `+${heal}`, "heal");
+    floatText(playerBox, `+${mpRecover}MP`, "heal");
+    log("回復アイテムを使用した！", "heal");
 
-  p.items--;
-  p.hp = clamp(p.hp + heal, 0, p.maxHp);
-  p.mp = clamp(p.mp + mpRecover, 0, p.maxMp);
-
-  floatText(playerBox, `+${heal}`, "heal");
-  floatText(playerBox, `+${mpRecover}MP`, "heal");
-  log("回復アイテムを使用した！", "heal");
-
-
-
-    // ちょっとしたエフェクト
     const spark = document.createElement("div");
     spark.style.width = "90px";
     spark.style.height = "90px";
@@ -265,65 +272,47 @@ function playerTurn(action){
     spark.style.top  = (pb.top  + pb.height/2 - app.top  - 45) + "px";
     $("#effectLayer").appendChild(spark);
     setTimeout(()=>spark.remove(), 450);
-    log("回復アイテムを使った！", "heal");
 
-} else if (action === "rest") {
-  const mpCost = 20;
-  if (p.mp < mpCost) {
-    log("MPが足りない…");
-    showToast("MPが足りない…");
-    state.busy = false;
-    setCommandsEnabled(true);
-    return;
+  } else if (action === "rest") {
+    const mpCost = 20;
+    if (p.mp < mpCost) {
+      log("MPが足りない…");
+      showToast("MPが足りない…");
+      state.busy = false;
+      setCommandsEnabled(true);
+      return;
+    }
+    const heal = 40;
+    p.hp = clamp(p.hp + heal, 0, p.maxHp);
+    p.mp = clamp(p.mp - mpCost, 0, p.maxMp);
+    floatText(playerBox, `+${heal}`, "heal");
+    floatText(playerBox, `-${mpCost}MP`, "dmg");
+    log("ひと休みして体勢を立て直した。", "heal");
   }
-  const heal = 40;
-  p.hp = clamp(p.hp + heal, 0, p.maxHp);
-  p.mp = clamp(p.mp - mpCost, 0, p.maxMp);
-  floatText(playerBox, `+${heal}`, "heal");
-  floatText(playerBox, `-${mpCost}MP`, "dmg");
-  log("ひと休みして体勢を立て直した。", "heal");
-}
 
   setBars();
 
   // 撃破判定
-if (e.hp <= 0) {
-  log(`${e.name}を倒した！`);
-  state.enemyIndex++;
+  if (e.hp <= 0) {
+    log(`${e.name}を倒した！`);
+    state.enemyIndex++;
 
-  const enemySprite = $("#enemySprite");
-  const banner = document.getElementById("nextEnemyBanner");
+    const banner = $("#nextEnemyBanner");
+    const enemySprite = $("#enemySprite");
 
-  // 敵をフェードアウト＋非表示
-  enemySprite.classList.add("fadeout");
-  setTimeout(() => {
-    enemySprite.classList.remove("fadeout");
-    enemySprite.style.display = "none"; // ← 非表示
-    banner.style.display = "block";
-  }, 800);
+    enemySprite.classList.add("fadeout");
+    setTimeout(() => {
+      enemySprite.classList.remove("fadeout");
+      enemySprite.style.display = "none";
+      banner.style.display = "block";
+    }, 800);
 
-  // 次の敵を遅れて表示
-  setTimeout(() => {
-    banner.style.display = "none";
-    nextEnemy();
-    $("#enemySprite").style.display = "block"; // ← 再表示
-    state.busy = false;
-  }, 2000);
-
-  return;
-
-  
-    // 最終戦なら終了
-    if (state.enemyIndex >= state.enemies.length){
-      finishGame();
-      state.busy = false;
-      return; // ← ここで完全に止める
-    }
-
-    // 次の敵へ
-    setTimeout(()=>{
+    setTimeout(() => {
+      banner.style.display = "none";
       nextEnemy();
-    }, 600);
+      state.busy = false;
+    }, 2000);
+
     return;
   }
 
@@ -367,15 +356,13 @@ function enemyTurn(){
     playerBox.classList.add("shake");
     setTimeout(()=>playerBox.classList.remove("shake"), 250);
     floatText(playerBox, `-${dmg}`, "dmg");
-    logs.push(`${e.name}の ${chosen.log} ${p.name}は ${dmg} ダメージ！`);
+    logs.push(`${e.name}の ${chosen.log || chosen.name} ${p.name}は ${dmg} ダメージ！`);
   };
 
   if (chosen.type === "basic"){
     performBasic(chosen.power ?? 14);
-
   } else if (chosen.type === "nuke"){
     performBasic(chosen.power ?? 16);
-
   } else if (chosen.type === "crit"){
     const base = chosen.power ?? 12;
     const critMul = chosen.critMul ?? 1.5;
@@ -387,7 +374,6 @@ function enemyTurn(){
     floatText(playerBox, `-${dmg}${isCrit?"!!":""}`, isCrit ? "crit" : "dmg");
     logs.push(`${e.name}の ${chosen.name}！ ${isCrit?"痛恨の一撃！！ ":""}`);
     logs.push(`${p.name}は ${dmg} のダメージ！`);
-
   } else if (chosen.type === "debuff"){
     if (chosen.effect === "mpDrain"){
       const loss = chosen.value ?? 10;
@@ -397,7 +383,6 @@ function enemyTurn(){
     } else {
       performBasic(12);
     }
-
   } else if (chosen.type === "buff"){
     if (chosen.effect === "doubleNext"){
       state.enemyDoubleNext = true;
@@ -410,7 +395,6 @@ function enemyTurn(){
   logs.forEach(t=>log(t));
   setBars();
 
-  // 追撃
   if (state.enemyDoubleNext && chosen.type !== "buff"){
     state.enemyDoubleNext = false;
     setTimeout(()=>{
@@ -434,24 +418,16 @@ function finishEnemyTurn() {
   if (state.player.hp <= 0) {
     log("あなたは眠りを妨げられてしまった…… GAME OVER");
     showToast("ゲームオーバー");
-
-    // コマンド無効化
     setCommandsEnabled(false);
-
-    // ゲーム画面非表示＆モーダル表示
-    const gameScreen = document.getElementById("game-screen");
-    const gameoverModal = document.getElementById("gameoverModal");
+    const gameScreen = $("#game-screen");
+    const gameoverModal = $("#gameoverModal");
     if (gameScreen && gameoverModal) {
       gameScreen.classList.add("hidden");
       gameoverModal.style.display = "block";
     }
-
-    // busyをtrueにして次のターンを止める
     state.busy = true;
     return;
   }
-
-  // 敵の行動後、プレイヤーの操作を許可
   state.busy = false;
   setCommandsEnabled(true);
 }
@@ -459,7 +435,6 @@ function finishEnemyTurn() {
 // ===== boot =====
 window.addEventListener("DOMContentLoaded", ()=>{
   populateDiffButtons();
-
   $("#startBtn").addEventListener("click", startGame);
   $("#btnAttack").addEventListener("click", ()=>playerTurn("attack"));
   $("#btnSkill").addEventListener("click",  ()=>playerTurn("skill"));
