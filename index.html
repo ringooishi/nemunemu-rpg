@@ -41,47 +41,39 @@
     <section id="game-screen" class="hidden">
       <header class="topbar">
         <div class="game-title">ねむねむRPG</div>
-        <div class="difficulty-pill" id="difficultyPill">NORMAL</div>
+        <div class="difficulty-pill" id="difficultyPill">NORMAL ・ ふつう</div>
       </header>
 
+      <!-- Status (2 columns: player / enemy) -->
       <div class="status card">
-        <div class="status-row">
+        <div class="status-row" id="playerStatus">
           <div class="name" id="playerNameLabel">勇者ねむねむ</div>
-          <div class="bar-wrap">
-            <div class="bar bar-hp"><div id="playerHpBar" class="bar-fill"></div></div>
-            <div class="bar-text" id="playerHpText">100/100</div>
-          </div>
-          <div class="bar-wrap">
-            <div class="bar bar-mp"><div id="playerMpBar" class="bar-fill"></div></div>
-            <div class="bar-text" id="playerMpText">50/50</div>
-          </div>
-          <div class="pill" id="itemPill">回復x3</div>
+          <div class="bar" id="playerHpWrap"><div id="playerHpBar" class="bar-fill hp"></div></div>
+          <div class="bar" id="playerMpWrap"><div id="playerMpBar" class="bar-fill mp"></div></div>
+          <div id="itemPill" class="pill">回復アイテムx3</div>
         </div>
 
-        <div class="status-row right">
+        <div class="status-row right" id="enemyStatus">
           <div class="name" id="enemyNameLabel">？？？</div>
-          <div class="bar-wrap">
-            <div class="bar bar-ehp"><div id="enemyHpBar" class="bar-fill"></div></div>
-            <div class="bar-text" id="enemyHpText">--/--</div>
-          </div>
+          <div class="bar" id="enemyHpWrap"><div id="enemyHpBar" class="bar-fill ehp"></div></div>
         </div>
       </div>
 
-<div class="arena card">
-  <div class="figures">
-    <div class="figure player">
-      <div class="sprite player-sprite"></div>
-    </div>
-    <div class="figure enemy" id="enemySpriteBox">
-      <div class="sprite enemy-sprite" id="enemySprite"></div>
-    </div>
-  </div>
+      <div class="arena card">
+        <div class="figures">
+          <div class="figure player">
+            <div class="sprite player-sprite"></div>
+          </div>
+          <div class="figure enemy" id="enemySpriteBox">
+            <div class="sprite enemy-sprite" id="enemySprite"></div>
+          </div>
+        </div>
 
-  <!-- ここに追加！ -->
-  <img id="nextEnemyBanner" src="img/next_enemy.png" alt="NEXT ENEMY" />
+        <!-- 撃破→次の敵アナウンス -->
+        <img id="nextEnemyBanner" src="img/next_enemy.png" alt="NEXT ENEMY" />
 
-  <div id="effectLayer" class="effect-layer"></div>
-</div>
+        <div id="effectLayer" class="effect-layer"></div>
+      </div>
 
       <div class="log card" id="log"></div>
 
@@ -101,20 +93,19 @@
   </div>
 
   <script src="script.js"></script>
+
+  <!-- 勝利 / 敗北 モーダル -->
   <div id="victoryModal">
-  <h2>🌙おめでとう！これで気持ちよく眠れる！</h2>
-  <p>かかったターン数：<span id="turnCountDisplay">0</span></p>
-  <button onclick="location.reload()">もう一度あそぶ</button>
-  <button onclick="window.close()">おやすみ…終了</button>
-</div>
+    <h2>🌙おめでとう！これで気持ちよく眠れる！</h2>
+    <p>かかったターン数：<span id="turnCountDisplay">0</span></p>
+    <button onclick="location.reload()">もう一度あそぶ</button>
+    <button onclick="window.close()">おやすみ…終了</button>
+  </div>
   <div id="gameoverModal">
-  <h2>😱 あなたは眠りを妨げられてしまった…</h2>
-  <p>ゆっくりおやすみして、もう一度挑戦しよう。</p>
-  <button onclick="location.reload()">再挑戦する</button>
-  <button onclick="window.close()">今日は終了</button>
-</div>
-  
-  <img id="nextEnemyBanner" src="img/next_enemy.png" alt="NEXT ENEMY" />
-  
+    <h2>😱 あなたは眠りを妨げられてしまった…</h2>
+    <p>ゆっくりおやすみして、もう一度挑戦しよう。</p>
+    <button onclick="location.reload()">再挑戦する</button>
+    <button onclick="window.close()">今日は終了</button>
+  </div>
 </body>
 </html>
