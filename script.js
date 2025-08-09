@@ -118,7 +118,7 @@ function populateDiffButtons(){
   ["EASY","NORMAL","HARD","NIGHTMARE"].forEach(k=>{
     const d = document.createElement("div");
     d.className = "diff" + (k==="NORMAL" ? " active" : "");
-    d.textContent = `${k} / ${DIFFS[k].label}`;
+    d.textContent = k;
     d.dataset.key = k;
     d.addEventListener("click", ()=>{
       document.querySelectorAll(".diff").forEach(x=>x.classList.remove("active"));
