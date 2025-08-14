@@ -2,9 +2,9 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
   <title>ねむねむRPG (Web)</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="style.mobile.css" />
 </head>
 <body>
   <div class="app">
@@ -81,8 +81,19 @@
         <button id="btnAttack" class="cmd">攻撃</button>
         <button id="btnSkill"  class="cmd">スキル</button>
         <button id="btnItem"   class="cmd">アイテム</button>
-        <button id="btnRest"   class="cmd">休む</button>
+        <button id="btnRest"   class="cmd">ガード</button>
       </div>
+
+<!-- === Skill Overlay === -->
+<div id="skillOverlay" class="overlay hidden" role="dialog" aria-modal="true" aria-labelledby="skillTitle">
+  <div class="sheet card">
+    <div class="sheet-head">
+      <h3 id="skillTitle">スキルを選択</h3>
+      <button id="skillClose" class="ghost small">閉じる</button>
+    </div>
+    <ul id="skillList" class="skill-list"></ul>
+  </div>
+</div>
 
       <footer class="footer">
         <button id="btnRetry" class="ghost">リトライ</button>
@@ -94,18 +105,40 @@
 
   <script src="script.js"></script>
 
-  <!-- 勝利 / 敗北 モーダル -->
-  <div id="victoryModal">
-    <h2>🌙おめでとう！これで気持ちよく眠れる！</h2>
-    <p>かかったターン数：<span id="turnCountDisplay">0</span></p>
-    <button onclick="location.reload()">もう一度あそぶ</button>
-    <button onclick="window.close()">おやすみ…終了</button>
-  </div>
-  <div id="gameoverModal">
-    <h2>😱 あなたは眠りを妨げられてしまった…</h2>
-    <p>ゆっくりおやすみして、もう一度挑戦しよう。</p>
+<!-- 勝利 / 敗北 モーダル -->
+<div id="victoryModal">
+  <h2>🌙おめでとう！これで気持ちよく眠れる！</h2>
+  <p>かかったターン数：<span id="turnCountDisplay">0</span></p>
+  <button onclick="location.reload()">もう一度あそぶ</button>
+  <button onclick="window.close()">おやすみ…終了</button>
+</div>
+
+<div id="gameoverModal">
+  <h2>😱 あなたは眠りを妨げられてしまった…</h2>
+  <p id="nmResult" style="margin-top:10px;"></p>     <!-- ← ここに移動 -->
+  <p>ゆっくりおやすみして、もう一度挑戦しよう。</p>
+   <div class="btn-grid">
+    <button id="btnSaveScoreNM">スコアを記録する</button>
+    <button id="btnOpenBoardNM">スコアボードを見る</button>
+
     <button onclick="location.reload()">再挑戦する</button>
     <button onclick="window.close()">今日は終了</button>
   </div>
+</div>
+  
+<div id="scoreOverlay" class="overlay hidden">
+  <div class="score-header">
+    <h2 class="overlay-title">スコアボード</h2>
+    <button id="closeScore" class="ghost">閉じる</button>
+  </div>
+
+  <!-- 難易度表示（固定で NIGHTMARE） -->
+  <div id="diffTabs" style="display:flex;justify-content:center;margin:8px 0;">
+    <span class="diff-label">NIGHTMARE</span>
+  </div>
+
+  <!-- スコアリスト -->
+  <div id="scoreList"></div>
+</div>
 </body>
 </html>
