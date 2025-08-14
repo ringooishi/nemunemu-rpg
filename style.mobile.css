@@ -1,0 +1,265 @@
+:root{
+  --bg:#0f1115; --card:#161a22; --muted:#8aa; --fg:#eef3ff; --pill:#2a3445;
+  --hp:#4caf50; --mp:#4285f4; --ehp:#f44336; --shadow:0 6px 20px rgba(0,0,0,.35);
+}
+
+/* ===== Base reset & mobile-friendly defaults ===== */
+*{box-sizing:border-box}
+html,body{height:100%}
+html{ -webkit-text-size-adjust:100%; }
+body{
+  margin:0; padding:12px;
+  background:radial-gradient(1200px 600px at 50% -200px,#1b2230,var(--bg));
+  color:var(--fg);
+  font-family:"Hiragino Kaku Gothic ProN","Yu Gothic",system-ui,-apple-system,sans-serif;
+  -webkit-font-smoothing:antialiased;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Container: add side padding for small screens */
+.app{max-width:560px;margin:0 auto;padding:0 8px}
+.hidden{display:none}
+
+/* Cards */
+.card{
+  background:var(--card);
+  border:1px solid rgba(255,255,255,.06);
+  border-radius:16px; padding:14px; box-shadow:var(--shadow); margin:10px 0;
+}
+.title{margin:6px 0 16px;font-weight:800;letter-spacing:.02em}
+.topbar{display:flex;align-items:center;justify-content:space-between;padding:6px 0}
+.game-title{font-weight:700;opacity:.9}
+.difficulty-pill{padding:4px 10px;border-radius:999px;background:var(--pill);font-size:12px;color:#cfe6ff;border:1px solid rgba(255,255,255,.08)}
+
+/* ===== Status ===== */
+.status{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px}
+.status .status-row{display:grid;align-content:start;gap:10px}
+.status .status-row.right{justify-items:end;text-align:right}
+.name{font-weight:800}
+
+/* Bars */
+.bar{position:relative;width:100%;height:14px;background:#263040;border-radius:999px;overflow:hidden;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04)}
+.bar .bar-fill{height:100%;width:0;border-radius:999px;transition:width .25s ease}
+.bar .bar-fill.hp{background:linear-gradient(90deg,#27d36b,#14904a)}
+.bar .bar-fill.mp{background:linear-gradient(90deg,#4b7de8,#1540b3)}
+.bar .bar-fill.ehp{background:linear-gradient(90deg,#e84b4b,#b31515)}
+
+/* Show numbers inside bars (centered) */
+.bar .bar-fill::after {
+  content: attr(data-value);
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 12px; font-weight: 700;
+  color: #fff;
+  text-shadow: 0 0 2px rgba(0,0,0,.7);
+  white-space: nowrap; pointer-events: none;
+}
+
+/* Pills */
+.pill{display:inline-block;width:auto;max-width:100%;padding:6px 12px;background:var(--pill);border-radius:999px;font-size:12px}
+
+/* ===== Arena / effects ===== */
+.arena{position:relative}
+.arena .figures{display:grid;grid-template-columns:1fr 1fr;align-items:end;gap:10px;min-height:180px}
+.figure{display:flex;align-items:center;justify-content:center;height:180px;position:relative}
+.sprite{width:120px;height:120px;border-radius:12px;background-size:contain;background-repeat:no-repeat;background-position:center}
+.player-sprite{background-image:url("img/player.png")}
+.enemy-sprite.enemy-blue{background-image:url("img/blu.png")}
+.enemy-sprite.enemy-ghost{background-image:url("img/ghost.png")}
+.enemy-sprite.enemy-caffeine{background-image:url("img/caffeine.png")}
+.enemy-sprite.enemy-negaeri{background-image:url("img/negaeri.png")}
+.enemy-sprite.enemy-poteto{background-image:url("img/poteto.png")}
+.enemy-sprite.enemy-shimekiri{background-image:url("img/shimekiri.png")}
+.enemy-sprite.enemy-boss-bakurem{background-image:url("img/boss-bakurem.png")}
+.enemy-sprite.enemy-fairy{background-image:url("img/fairy.png")}
+
+
+
+.effect-layer{position:absolute;inset:0;pointer-events:none}
+.floating{position:absolute;left:50%;transform:translateX(-50%);font-weight:800;text-shadow:0 2px 8px rgba(0,0,0,.6);animation:floatUp .8s ease-out forwards}
+@keyframes floatUp{0%{opacity:0;transform:translate(-50%,0) scale(.9)}15%{opacity:1}100%{opacity:0;transform:translate(-50%,-40px) scale(1)}}
+.shake{animation:shake .25s linear 1}
+@keyframes shake{0%,100%{transform:translateX(0)}25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+
+.log{height:140px;overflow:auto;font-size:14px;line-height:1.6;padding:12px;-webkit-overflow-scrolling:touch}
+.log .crit{color:#ffa733}.log .dmg{color:#ff7373}.log .heal{color:#71e3a2}
+.log .guard{ color:#8dd3ff; }
+.log .mp { color: #71b8ff; } 
+
+/* Commands */
+.commands{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.cmd{padding:12px;font-weight:700;border-radius:12px;border:1px solid rgba(255,255,255,.08);background:#1c2330;color:var(--fg);min-height:44px}
+.cmd:disabled{opacity:.5}
+.primary{width:100%;padding:12px;border-radius:12px;font-weight:800;border:none;background:linear-gradient(45deg,#2aa,#58f);color:#fff}
+.ghost{width:100%;padding:10px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:transparent;color:#cfe6ff}
+
+/* Forms */
+.field{margin:14px 0;display:grid;gap:6px}
+.field input{padding:12px;border-radius:10px;border:1px solid rgba(255,255,255,.12);background:#0f1520;color:#eaf5ff;font-size:16px}
+
+/* Difficulty buttons */
+.label-row{display:flex;justify-content:space-between;align-items:center;color:#cfe6ff;opacity:.9;margin-bottom:6px}
+.diff-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.diff{padding:10px 8px;text-align:center;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:#0f1520;cursor:pointer;user-select:none}
+.diff.active{outline:2px solid #58f;background:#16233b}
+.notes summary{cursor:pointer;color:#9fd7ff}
+
+/* Toast & footer */
+.toast{
+  position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));
+  transform:translateX(-50%);padding:10px 14px;background:#1c2330;border:1px solid rgba(255,255,255,.12);border-radius:999px
+}
+.footer{margin:12px 0;padding-bottom:env(safe-area-inset-bottom)}
+
+/* Modals */
+#victoryModal,#gameoverModal{
+  display:none; position:fixed; z-index:999; inset:0;
+  background:rgba(0,0,0,.9); color:#fff; text-align:center; padding:50px 20px; font-size:1.8rem;
+}
+#victoryModal h2,#gameoverModal h2{font-size:2.2rem;margin-bottom:10px}
+#victoryModal button,#gameoverModal button{margin:20px 10px;padding:12px 24px;font-size:1rem;border:none;border-radius:8px;cursor:pointer;background:#fff;color:#000}
+
+.fadeout{animation:fadeOut .8s forwards}
+@keyframes fadeOut{from{opacity:1;transform:scale(1)}to{opacity:0;transform:scale(.7)}}
+
+#nextEnemyBanner{display:none;position:absolute;width:200px;top:50%;left:75%;transform:translate(-50%,-50%);pointer-events:none;z-index:5}
+
+/* ====== Responsive tweaks ====== */
+@media (max-width: 480px){
+  body{ padding:10px; }
+  .title { font-size: 1.5rem; text-align:center; }
+  .status { gap: 8px 12px; }
+  .bar { height: 12px; }
+  .sprite { width: 96px; height: 96px; }
+  .figure { height: 150px; }
+  .log { height: 120px; font-size: 13px; }
+  .cmd { padding: 10px; font-size: 14px; min-height: 44px; }
+  .diff { padding: 10px 6px; font-size: 12px; }
+  #victoryModal,#gameoverModal{ font-size:1.2rem; padding:30px 10px; }
+  #victoryModal h2,#gameoverModal h2{ font-size:1.5rem; }
+  #nextEnemyBanner{ width:150px; left:70%; }
+}
+
+/* Very small devices */
+@media (max-width: 360px){
+  .diff-row{ grid-template-columns:repeat(2,1fr); }
+  .status{ grid-template-columns: 1fr; }
+  .status .status-row.right{ justify-items:start; text-align:left; }
+  .arena .figures{ grid-template-columns:1fr; min-height:220px; }
+  .figure{ height: 140px; }
+  .commands{ grid-template-columns:1fr; }
+}
+
+/* Prevent double-tap zoom on interactive elements (best-effort) */
+button, .cmd, .primary, .ghost { touch-action: manipulation; }
+html { touch-action: manipulation; }
+
+/* === Skill Overlay === */
+.overlay{
+  position:fixed; inset:0; z-index:1001;
+  background:rgba(0,0,0,.6);
+  backdrop-filter:saturate(1.1) blur(4px);
+  display:flex; align-items:flex-end; justify-content:center; /* 下から出るシート風 */
+  padding:12px; padding-bottom:calc(12px + env(safe-area-inset-bottom));
+}
+.overlay .sheet{
+  width:100%; max-width:560px; max-height:80vh;
+  overflow:auto; border-radius:16px;
+}
+.sheet-head{display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:8px}
+.ghost.small{padding:6px 10px; font-size:.9rem}
+
+.skill-list{list-style:none; margin:0; padding:0; display:grid; gap:8px}
+.skill-item{
+  display:flex; gap:10px; align-items:flex-start;
+  padding:10px; border:1px solid rgba(255,255,255,.1); border-radius:12px;
+  background:#111826; cursor:pointer;
+}
+.skill-item:hover{background:#132033}
+.skill-name{font-weight:800}
+.skill-row{display:flex; align-items:center; gap:8px; margin-bottom:2px}
+.skill-cost{font-size:12px; color:#cfe6ff; background:var(--pill); border:1px solid rgba(255,255,255,.08); border-radius:999px; padding:2px 8px}
+.skill-desc{font-size:13px; color:#cfe6ff; opacity:.9; line-height:1.5}
+
+/* すごく小さい端末での見やすさ */
+@media (max-width: 360px){
+  .skill-desc{font-size:12px}
+}
+
+/* Ensure overlay stays hidden when .hidden is present */
+.overlay.hidden { display: none !important; }
+
+
+#scoreList table{width:100%;border-collapse:collapse;font-size:14px}
+#scoreList th,#scoreList td{padding:8px;border-bottom:1px solid rgba(255,255,255,.08);text-align:left}
+#scoreList th{opacity:.9}
+#scoreList .small{opacity:.7;font-size:12px}
+
+/* スコアボード全体を縦積みレイアウトに */
+#scoreOverlay{
+  display: flex;
+  flex-direction: column;
+  align-items: center;   /* ← 中央寄せ */
+  justify-content: flex-start;
+}
+
+/* スコアリストも中央寄せ表示 */
+#scoreList{
+  width: 100%;
+  max-width: 600px;      /* 好きな最大幅に調整 */
+}
+
+/* ヘッダーは常に最上部に貼り付け */
+#scoreOverlay .score-header{
+  position: sticky;
+  top: 0;
+  z-index: 1;            /* リストより前面に */
+  display: flex;
+  flex-direction: column;/* タイトル→閉じる を縦並びにしたいなら */
+  gap: 8px;
+  padding: 12px 16px;
+  background: rgba(0,0,0,0.4); /* 下のリストが透けないように */
+  backdrop-filter: blur(6px);
+}
+
+/* タイトルの見た目 */
+#scoreOverlay .overlay-title{
+  margin: 0;
+  font-size: clamp(20px, 4vw, 26px);
+  line-height: 1.2;
+  white-space: nowrap;
+}
+
+/* ラベルとリストの余白 */
+#scoreOverlay #diffTabs{ margin: 8px 16px; }
+#scoreOverlay #scoreList{ padding: 0 16px 16px; }
+
+/* 画面が極端に狭いときだけ折り返しを許す（任意） */
+@media (max-width: 360px){
+  #scoreOverlay .overlay-title.nowrap{ white-space: normal; }
+}
+
+
+/* ゲームオーバー画面の2段ボタンレイアウト */
+#gameoverModal .btn-grid {
+  display: grid;
+  grid-template-columns: repeat(2, auto);
+  gap: 10px;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+#gameoverModal button {
+  width: auto;
+  min-width: 140px;
+  padding: 8px 16px;
+}
+
+/* モバイルでは縦並び */
+@media (max-width: 460px) {
+  #gameoverModal .btn-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
